@@ -41,8 +41,6 @@ extension UIView {
         }
         return UIImage()
     }
-    
-    
 }
 
 
