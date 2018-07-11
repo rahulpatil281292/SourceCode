@@ -8,55 +8,35 @@
 
 import UIKit
 
-// We can navigate from source viewcontroller to destination viewcontroller in 3 way's
-//  1 - Using present , 2 - Using push, 3 - Using Segue
-// we can send data with above 3 ways from source to destination
-
 class ViewController: UIViewController {
     
+    let imageView = UIImageView()
+    let imagepicker = UIImagePickerController()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.imagepicker.delegate = self
+        imageView.frame = CGRect(x: 40, y: 150, width: 100, height: 100)
+        self.view.addSubview(imageView)
     }
     
-    @IBAction func nextButtonPressed(_ sender : UIButton) {
-        usingSegue()
+    @IBAction func uploadImage(_ sender : UIButton) {
+        imagepicker.cameraDevice = .rear
+        imagepicker.cameraCaptureMode = .photo
+        imagepicker.sourceType = .photoLibrary
     }
-    
-    func usingPush()  {
-        // push viewcontroller not workin on navigationcontroller.
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let viewcontroller = storyboard.instantiateViewController(withIdentifier: "nextviewcontroller") as? NextViewController {
-            viewcontroller.name = "RAhul patil"
-            self.navigationController?.present(viewcontroller, animated: true, completion: nil)
-           // self.navigationController?.pushViewController(viewcontroller, animated: true)
+}
+
+
+extension ViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            return
         }
+        imageView.image = image
+        print(image)
     }
     
-    func usingSegue()  {
-        // navigate second veiw controller by using segue
-        // if we navigate by using segue then can't dismiss view controller
-        self.performSegue(withIdentifier: "nextsegue", sender: self)
-    }
-    
-    // overide method to send data from source to destination.
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let vc = segue.destination as? NextViewController {
-            vc.name = "rahul patil"
-        }
-    }
-    
-    func usingPresent()  {
-        // if your viewController dont have navigationController then present it.
-        // if you are working on different storyboard then you should present viewcontroller.
-        let getStroryboard = UIStoryboard.init(name: "Main", bundle: nil)
-        if let getViewcontroller = getStroryboard.instantiateViewController(withIdentifier: "nextviewcontroller") as? NextViewController {
-        getViewcontroller.name = "Rahul Patil"
-        self.present(getViewcontroller, animated: true, completion: nil)
-        }
-    }
-    
-    @IBAction func previousViewControllerBtnPressed(_ sender : UIButton) {
-        // dismiss view controller worked on present and push view controller.
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
     }
 }
