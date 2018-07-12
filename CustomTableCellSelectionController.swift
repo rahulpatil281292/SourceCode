@@ -29,14 +29,14 @@ class NextViewController: UIViewController {
     }
     
     @objc func onetap(sender : UITapGestureRecognizer)  {
-        let touchpoint = sender.location(in: tablev)
-        let indexpath = tablev.indexPathForRow(at: touchpoint)
+        let touchpoint = sender.location(in: tableview)
+        let indexpath = tableview.indexPathForRow(at: touchpoint)
         print("One tap :\(String(describing: indexpath?.row))")
     }
     
     @objc func twotap(sender : UITapGestureRecognizer)  {
-            let touchpoint = sender.location(in: tablev)
-            let indexpath = tablev.indexPathForRow(at: touchpoint)
+            let touchpoint = sender.location(in: tableview)
+            let indexpath = tableview.indexPathForRow(at: touchpoint)
         print("Double Tap : \(String(describing: indexpath?.row))")
     }
 }
